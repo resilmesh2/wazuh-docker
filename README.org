@@ -83,7 +83,7 @@ wherever necessary.  You will need administrator privileges for this.
 
 **** Running the server
 
-The final step is to run Wazuh with the project Compose file.
+To run the server, simply deploy it using ~docker-compose~.
 
 #+NAME: wazuh-server-run
 #+CALL: docker-compose-run(dir=wazuh-server-directory())
@@ -91,7 +91,7 @@ The final step is to run Wazuh with the project Compose file.
 #+NAME: wazuh-server-kill
 #+CALL: docker-compose-kill(dir=wazuh-server-directory())
 
-*** Shortcuts
+*** COMMENT Shortcuts
 
 - *Recreate everything*
 
@@ -141,8 +141,26 @@ must be added to the =data/= folder.
 
 **** Running the agent
 
+To run the agent, simply deploy it using ~docker compose~.
+
 #+NAME: wazuh-agent-run
 #+CALL: docker-compose-run(dir=wazuh-agent-directory())
 
 #+NAME: wazuh-agent-kill
 #+CALL: docker-compose-kill(dir=wazuh-agent-directory())
+
+** COMMENT Common code blocks
+
+#+NAME: docker-compose-run
+#+begin_src sh :var dir="/" :var file="docker-compose.yaml" :results verbatim
+  cd $dir
+
+  docker compose -f $file up -d 2>&1
+#+end_src
+
+#+NAME: docker-compose-kill
+#+begin_src sh :var dir="/" :var file="docker-compose.yaml" :results verbatim
+  cd $dir
+
+  docker compose -f $file down --remove-orphans 2>&1
+#+end_src
