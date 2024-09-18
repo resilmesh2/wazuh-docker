@@ -4,3 +4,145 @@
 
 This project contains all necessary resources to build and deploy Wazuh on the
 ResilMesh network.
+
+** Wazuh server
+
+*** Variables
+
+#+NAME: wazuh-server-directory
+#+begin_src emacs-lisp :cache yes
+  (concat default-directory "wazuh-server-config/")
+#+end_src
+
+*** Deployment
+
+This guide is a summary of the [[https://documentation.wazuh.com/current/deployment-options/docker/index.html][official Wazuh documentation]].  The end result
+will be a single-node deployment, with one instance of each manager, indexer,
+and dashboard nodes.
+
+**** Generating server certificates
+
+Generate a set of valid certificates using the =generate-indexer-certs.yaml=
+Compose file.  Rename the =config-base/= directory to =config/=, and run the
+deployment.
+
+#+NAME: wazuh-server-generate-certificates
+#+begin_src sh :var dir=wazuh-server-directory() :results verbatim
+  cd $dir
+
+  if [ ! -d config ]; then
+      cp -r config-base config
+  fi
+  docker compose -f generate-indexer-certs.yaml up 2>&1
+  # Remove lingering container
+  docker compose -f generate-indexer-certs.yaml down --remove-orphans 2>&1
+#+end_src
+
+If necessary, remove existing certificates or the entire configuration
+directory.
+
+#+NAME: wazuh-server-remove-config-directory
+#+begin_src sh :dir (concat "/sudo::" (expand-file-name ".")) :var dir=wazuh-server-directory() :results silent
+  cd $dir
+
+  if [ -d config ]; then
+      rm -r config
+  fi
+#+end_src
+
+**** Generating server configuration files
+
+The next step is to run Wazuh using the original Compose file, in order to
+generate all the config files.  You won't need this Wazuh instance, so take it
+down afterwards.
+
+#+NAME: wazuh-run-vanilla-server
+#+CALL: docker-compose-run(dir=wazuh-server-directory(), file="docker-compose-original.yaml")
+
+#+NAME: wazuh-kill-vanilla-server
+#+CALL: docker-compose-kill(dir=wazuh-server-directory(), file="docker-compose-original.yaml")
+
+**** Updating server configuration files
+
+Afterwards, the generated configuration files have to be updated with new ones
+wherever necessary.  You will need administrator privileges for this.
+
+#+NAME: wazuh-server-update-configuration-files
+#+begin_src sh :dir (concat "/sudo::" (expand-file-name ".")) :var dir=wazuh-server-directory() :results silent
+  cd $dir
+
+  mkdir -p config/wazuh_etc/rules
+  cp -t config/wazuh_etc/rules fim_dir.xml local_rules.xml
+  mkdir -p config/wazuh_etc/decoders
+  cp -t config/wazuh_etc/decoders local_decoder.xml
+  mkdir -p config/wazuh_integrations
+  cp -t config/wazuh_integrations custom-publisher
+  mkdir -p config/wazuh_cluster
+  cp ossec.conf config/wazuh_cluster/wazuh_manager.conf
+#+end_src
+
+**** Running the server
+
+The final step is to run Wazuh with the project Compose file.
+
+#+NAME: wazuh-server-run
+#+CALL: docker-compose-run(dir=wazuh-server-directory())
+
+#+NAME: wazuh-server-kill
+#+CALL: docker-compose-kill(dir=wazuh-server-directory())
+
+*** Shortcuts
+
+- *Recreate everything*
+
+  #+CALL: wazuh-server-generate-certificates()
+
+  #+CALL: wazuh-server-run-vanilla()
+
+  #+CALL: wazuh-server-kill-vanilla()
+
+  [[wazuh-server-update-configuration-files][wazuh-server-update-configuration-files()]]
+
+  #+CALL: wazuh-server-run()
+
+  #+CALL: wazuh-server-kill()
+
+- *Remove and cleanup*
+
+  #+CALL: wazuh-server-kill-vanilla()
+
+  #+CALL: wazuh-server-kill()
+
+  [[wazuh-server-remove-config-directory][wazuh-server-remove-config-directory()]]
+
+** Wazuh agent
+
+*** Variables
+
+#+NAME: wazuh-agent-directory
+#+begin_src emacs-lisp :cache yes
+  (concat default-directory "wazuh-agent/")
+#+end_src
+
+*** Deployment
+
+**** Updating configuration files
+
+In order to have the most up-to-date configuration file, the =ossec.conf= file
+must be added to the =data/= folder.
+
+#+NAME: wazuh-agent-update-configuration-files
+#+begin_src sh :dir (concat "/sudo::" (expand-file-name ".")) :var dir=wazuh-agent-directory() :results verbatim
+  cd $dir
+
+  mkdir -p data/etc
+  cp ossec.conf data/etc/ossec.conf
+#+end_src
+
+**** Running the agent
+
+#+NAME: wazuh-agent-run
+#+CALL: docker-compose-run(dir=wazuh-agent-directory())
+
+#+NAME: wazuh-agent-kill
+#+CALL: docker-compose-kill(dir=wazuh-agent-directory())
