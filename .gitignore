@@ -1,5 +1,10 @@
 # -*- mode: gitignore; -*-
 
+## Project specific
+
+# configuration volume for the server
+server/config/
+
 ## Emacs
 *~
 \#*\#

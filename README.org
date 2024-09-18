@@ -7,11 +7,18 @@ ResilMesh network.
 
 ** Wazuh server
 
+The server component will be tasked with receiving incoming logs from Wazuh
+agents and other sources, in order to analyze them and send the necessary alerts
+to the NATS broker.
+
+Unless otherwise mentioned, all references to ~$dir~ will refer to the top level
+=server/= folder within this repository.
+
 *** COMMENT Variables
 
 #+NAME: wazuh-server-directory
 #+begin_src emacs-lisp :cache yes
-  (concat default-directory "wazuh-server-config/")
+  (concat default-directory "server/")
 #+end_src
 
 *** Deployment
@@ -31,11 +38,11 @@ deployment.
   cd $dir
 
   if [ ! -d config ]; then
-      cp -r config-base config
+      cp -r base-configuration config
   fi
-  docker compose -f generate-indexer-certs.yaml up 2>&1
+  docker compose -f docker-compose-certs.yaml up 2>&1
   # Remove lingering container
-  docker compose -f generate-indexer-certs.yaml down --remove-orphans 2>&1
+  docker compose -f docker-compose-certs.yaml down --remove-orphans 2>&1
 #+end_src
 
 If necessary, remove existing certificates or the entire configuration
@@ -72,11 +79,11 @@ wherever necessary.  You will need administrator privileges for this.
   cd $dir
 
   mkdir -p config/wazuh_etc/rules
-  cp -t config/wazuh_etc/rules fim_dir.xml local_rules.xml
+  cp -t config/wazuh_etc/rules rules/*
   mkdir -p config/wazuh_etc/decoders
-  cp -t config/wazuh_etc/decoders local_decoder.xml
+  cp -t config/wazuh_etc/decoders decoders/*
   mkdir -p config/wazuh_integrations
-  cp -t config/wazuh_integrations custom-publisher
+  cp -t config/wazuh_integrations integrations/*
   mkdir -p config/wazuh_cluster
   cp ossec.conf config/wazuh_cluster/wazuh_manager.conf
 #+end_src
@@ -117,11 +124,17 @@ To run the server, simply deploy it using ~docker-compose~.
 
 ** Wazuh agent
 
+The agent component is to be deployed on devices within the network, in order to
+monitor device behavior and report back to the Wazuh server.
+
+Unless otherwise mentioned, all references to ~$dir~ will refer to the top level
+=agent/= folder within this repository.
+
 *** COMMENT Variables
 
 #+NAME: wazuh-agent-directory
 #+begin_src emacs-lisp :cache yes
-  (concat default-directory "wazuh-agent/")
+  (concat default-directory "agent/")
 #+end_src
 
 *** Deployment

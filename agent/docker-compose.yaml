@@ -1,0 +1,15 @@
+services:
+  wazuh.agent:
+    image: ubuntu:22.04
+    ports:
+      - "8889:8080"
+    volumes:
+      - ./data:/var/ossec
+      - ${PWD}/ossec.conf:/wazuh-config-mount/etc/ossec.conf
+    command: ["/var/ossec/entrypoint.sh"]
+    networks:
+      resilmesh_network:
+        ipv4_address: 192.168.200.200
+networks:
+  resilmesh_network:
+     external: true
