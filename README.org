@@ -7,7 +7,7 @@ ResilMesh network.
 
 ** Wazuh server
 
-*** Variables
+*** COMMENT Variables
 
 #+NAME: wazuh-server-directory
 #+begin_src emacs-lisp :cache yes
@@ -117,7 +117,7 @@ The final step is to run Wazuh with the project Compose file.
 
 ** Wazuh agent
 
-*** Variables
+*** COMMENT Variables
 
 #+NAME: wazuh-agent-directory
 #+begin_src emacs-lisp :cache yes
