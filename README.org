@@ -30,8 +30,8 @@ and dashboard nodes.
 **** Generating server certificates
 
 Generate a set of valid certificates using the =generate-indexer-certs.yaml=
-Compose file.  Rename the =config-base/= directory to =config/=, and run the
-deployment.
+Compose file.  Copy the =base-configuration/= directory to =config/=, and run
+the deployment.
 
 #+NAME: wazuh-server-generate-certificates
 #+begin_src sh :var dir=wazuh-server-directory() :results verbatim
@@ -72,7 +72,7 @@ down afterwards.
 **** Updating server configuration files
 
 Afterwards, the generated configuration files have to be updated with new ones
-wherever necessary.  You will need administrator privileges for this.
+wherever necessary.  You will likely need administrator privileges for this.
 
 #+NAME: wazuh-server-update-configuration-files
 #+begin_src sh :dir (concat "/sudo::" (expand-file-name ".")) :var dir=wazuh-server-directory() :results silent
@@ -90,7 +90,7 @@ wherever necessary.  You will need administrator privileges for this.
 
 **** Running the server
 
-To run the server, simply deploy it using ~docker-compose~.
+To run the server, simply deploy it using ~docker compose~.
 
 #+NAME: wazuh-server-run
 #+CALL: docker-compose-run(dir=wazuh-server-directory())
