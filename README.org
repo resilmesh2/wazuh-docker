@@ -1,0 +1,6 @@
+#+TITLE: Wazuh
+
+* Wazuh
+
+This project contains all necessary resources to build and deploy Wazuh on the
+ResilMesh network.
