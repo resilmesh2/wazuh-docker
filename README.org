@@ -168,7 +168,7 @@ To run the agent, simply deploy it using ~docker compose~.
 #+begin_src sh :var dir="/" :var file="docker-compose.yaml" :results verbatim
   cd $dir
 
-  docker compose -f $file up -d 2>&1
+  docker compose -f $file up --build -d 2>&1
 #+end_src
 
 #+NAME: docker-compose-kill
