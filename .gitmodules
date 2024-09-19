@@ -1,0 +1,3 @@
+[submodule "agent/openc2"]
+	path = agent/openc2
+	url = git@ants-gitlab.inf.um.es:resilmesh/openc2.git
