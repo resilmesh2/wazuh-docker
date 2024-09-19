@@ -59,9 +59,9 @@ directory.
 
 **** Generating server configuration files
 
-The next step is to run Wazuh using the original Compose file, in order to
-generate all the config files.  You won't need this Wazuh instance, so take it
-down afterwards.
+The next step is to run Wazuh using the original =docker-compose-original.yaml=
+file, in order to generate all the config files.  You won't need this Wazuh
+instance, so take it down afterwards.
 
 #+NAME: wazuh-server-run-vanilla
 #+CALL: docker-compose-run(dir=wazuh-server-directory(), file="docker-compose-original.yaml")
