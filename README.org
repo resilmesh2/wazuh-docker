@@ -125,7 +125,8 @@ To run the server, simply deploy it using ~docker compose~.
 ** Wazuh agent
 
 The agent component is to be deployed on devices within the network, in order to
-monitor device behavior and report back to the Wazuh server.
+monitor device behavior and report back to the Wazuh server.  This repository
+offers an example container running Ubuntu 22.04.
 
 Unless otherwise mentioned, all references to ~$dir~ will refer to the top level
 =agent/= folder within this repository.
