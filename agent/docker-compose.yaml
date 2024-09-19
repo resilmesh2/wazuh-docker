@@ -1,15 +1,20 @@
 services:
-  wazuh.agent:
-    image: ubuntu:22.04
+  wazuh.agent-ubuntu:
+    build:
+      dockerfile: ubuntu.Dockerfile
+      args:
+        manager_ip: ${SERVER_IP}
     ports:
-      - "8889:8080"
+      - 8889:8080
     volumes:
-      - ./data:/var/ossec
+      - wazuh-agent-ossec:/var/ossec
+      - ./commands:/var/ossec/commands
       - ${PWD}/ossec.conf:/wazuh-config-mount/etc/ossec.conf
-    command: ["/var/ossec/entrypoint.sh"]
     networks:
       resilmesh_network:
-        ipv4_address: 192.168.200.200
+        ipv4_address: ${AGENT_IP_UBUNTU2204}
+volumes:
+  wazuh-agent-ossec:
 networks:
   resilmesh_network:
      external: true
