@@ -2,7 +2,10 @@
 
 ## Project specific
 
-# configuration volume for the server
+# .env files
+**/.env
+
+# Configuration volume for the server
 server/config/
 
 ## Emacs
