@@ -111,7 +111,7 @@ services:
   wazuh.agent-ubuntu2204:
     build:
       context: agent
-      dockerfile: ubuntu.Dockerfile
+      dockerfile: ubuntu2204.Dockerfile
       args:
         manager_ip: ${MANAGER_IP}
     container_name: ResilMesh-Wazuh-Agent_Ubuntu_22.04
