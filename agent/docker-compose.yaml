@@ -9,7 +9,7 @@ services:
     volumes:
       - wazuh-agent-ossec:/var/ossec
       - ./commands:/var/ossec/commands
-      - ${PWD}/ossec.conf:/wazuh-config-mount/etc/ossec.conf
+      - ${PWD}/ossec.conf:/var/ossec/etc/ossec.conf
     networks:
       resilmesh_network:
         ipv4_address: ${AGENT_IP_UBUNTU2204}
