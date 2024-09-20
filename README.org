@@ -140,19 +140,6 @@ Unless otherwise mentioned, all references to ~$dir~ will refer to the top level
 
 *** Deployment
 
-**** Updating configuration files
-
-In order to have the most up-to-date configuration file, the =ossec.conf= file
-must be added to the =data/= folder.
-
-#+NAME: wazuh-agent-update-configuration-files
-#+begin_src sh :dir (concat "/sudo::" (expand-file-name ".")) :var dir=wazuh-agent-directory() :results verbatim
-  cd $dir
-
-  mkdir -p data/etc
-  cp ossec.conf data/etc/ossec.conf
-#+end_src
-
 **** Running the agent
 
 To run the agent, simply deploy it using ~docker compose~.
