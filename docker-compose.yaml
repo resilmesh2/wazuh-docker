@@ -120,6 +120,7 @@ services:
     volumes:
       - agent-ossec:/var/ossec
       - ./agent/commands:/var/ossec/commands
+      - ./agent/attack-tests:/agent/attack-tests
       - ${PWD}/agent/ossec.conf:/var/ossec/etc/ossec.conf
     networks:
       resilmesh_network:
