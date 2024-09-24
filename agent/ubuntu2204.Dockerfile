@@ -34,7 +34,7 @@ RUN apt-get install -y wazuh-agent=$agent_version && \
 COPY openc2/actuator/openapi.yaml openc2/openapi-generator-cli.sh openc2/actuator/config-python-flask.json ./
 COPY openc2/actuator/python-flask ./openc2_actuator
 RUN apt-get install -y maven jq && \
-    ./openapi-generator-cli.sh generate -g python-flask -c config-python-flask.json -i openapi.yaml -o openc2_actuator && \
+    ./openapi-generator-cli.sh generate -s -g python-flask -c config-python-flask.json -i openapi.yaml -o openc2_actuator && \
     apt-get purge -y maven jq && \
     apt-get autoremove -y
 RUN apt-get install -y python3 python3-pip && \
