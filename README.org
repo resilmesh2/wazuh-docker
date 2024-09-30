@@ -73,6 +73,12 @@ wherever necessary.  Administrator privileges are likely to be needed for this.
   mkdir -p config/wazuh_cluster
 #+end_src
 
+** Setting environment variables
+
+The project includes an =.env.example= file with information regarding the
+available environment variables.  Make a copy of the file, rename it to =.env=,
+and fill/modify any necessary values.
+
 ** Launching Wazuh
 
 After initialization, all components can be deployed through the top level
