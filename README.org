@@ -80,7 +80,7 @@ This network should be created in advance with the ~docker network create~
 command.  There are several static IPs in use by the project that are dependent
 on the ResilMesh network, so please ensure that the subnet they belong to
 matches the one used by the network.  The default configuration assumes the
-subnet =192.168.200.1/24=.  A network using this subnet can be created using the
+subnet =192.168.200.0/24=.  A network using this subnet can be created using the
 following command.
 
 #+begin_src sh
