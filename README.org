@@ -97,6 +97,13 @@ Make sure that permissions are set appropriately for all copied files.  Files
 under =rules/= and =integrations/= must belong to the =systemd-journal= group
 and have =750= permissions.
 
+/Note that this is the configuration that has been working for me so far -
+perhaps in a different machine the specific group is different.  What I'm doing
+is setting the group to be the same as the container's internally assigned ID
+for the =wazuh= group, which happens to be =systemd-journal= in my case.  If any
+permission issues arise, do check that the affected files/directories have the
+proper owner just in case./
+
 ** Creating the ResilMesh network
 
 All ResilMesh containers run on a special network called =resilmesh_network=.
