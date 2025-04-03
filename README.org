@@ -34,7 +34,6 @@ documentation]].
 
 #+NAME: wazuh-server-generate-certificates
 #+begin_src sh :results verbatim
-
   if [ ! -d config ]; then
       cp -r base-configuration config
   fi
