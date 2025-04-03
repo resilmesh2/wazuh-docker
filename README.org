@@ -160,22 +160,6 @@ replace ~docker compose~ with ~docker-compose~.
   (concat default-directory "server/")
 #+end_src
 
-** Project deployment
-
-#+NAME: docker-compose-run
-#+begin_src sh :var dir=current-directory() :var file="docker-compose.yaml" :results verbatim
-  cd $dir
-
-  docker compose -f $file up --build -d 2>&1
-#+end_src
-
-#+NAME: docker-compose-kill
-#+begin_src sh :var dir=current-directory() :var file="docker-compose.yaml" :results verbatim
-  cd $dir
-
-  docker compose -f $file down --remove-orphans 2>&1
-#+end_src
-
 ** Manager reconfiguration
 
 [[wazuh-server-remove-config-directory][wazuh-server-remove-config-directory()]]
