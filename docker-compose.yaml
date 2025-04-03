@@ -5,7 +5,6 @@ services:
       dockerfile: manager.Dockerfile
     hostname: wazuh.manager
     container_name: ResilMesh-Wazuh-Manager
-    #restart: always
     ulimits:
       memlock:
         soft: -1
@@ -108,24 +107,6 @@ services:
     networks:
       internal:
 
-  wazuh.agent-ubuntu2204:
-    build:
-      context: agent
-      dockerfile: ubuntu2204.Dockerfile
-      args:
-        manager_ip: ${MANAGER_IP}
-    container_name: ResilMesh-Wazuh-Agent_Ubuntu_22.04
-    ports:
-      - ${OPENC2_ACTUATOR_PORT}:8080
-    volumes:
-      - agent-ossec:/var/ossec
-      - ./agent/commands:/var/ossec/commands
-      - ./agent/attack-tests:/agent/attack-tests
-      - ./agent/ossec.conf:/var/ossec/etc/ossec.conf
-    networks:
-      resilmesh_network:
-        ipv4_address: ${AGENT_IP_UBUNTU2204}
-
 volumes:
   api_configuration:
   logs:
@@ -140,7 +121,6 @@ volumes:
   indexer-data:
   dashboard-config:
   dashboard-custom:
-  agent-ossec:
 
 networks:
   internal:
