@@ -6,7 +6,7 @@
 **/.env
 
 # Configuration volume for the server
-server/config/
+config/
 
 ## Emacs
 *~
