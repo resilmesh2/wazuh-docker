@@ -70,7 +70,7 @@ Docker Compose, make sure to replace ~docker compose~ with ~docker-compose~.
 #+NAME: wazuh-run-original
 #+begin_src sh :var dir=wazuh-server-directory()
   cd $dir
-  docker compose --file server/docker-compose-original.yaml up -d
+  docker compose --file docker-compose-original.yaml up -d
 #+end_src
 
 #+NAME: wazuh-kill-original
@@ -114,7 +114,7 @@ This network should be created in advance with the ~docker network create~
 command:
 
 #+begin_src sh
-  docker network create --subnet 192.168.200.0/24 --gateway=192.168.200.1 resilmesh_network
+  docker network create resilmesh_network
 #+end_src
 
 ** Setting environment variables
@@ -130,14 +130,12 @@ After initialization, all components can be deployed through the top level
 replace ~docker compose~ with ~docker-compose~.
 
 #+NAME: wazuh-run
-#+begin_src sh :var dir=wazuh-server-directory()
-  cd $dir
+#+begin_src sh :var dir=wazuh-server-directory() :results verbatim
   docker compose -f docker-compose.yaml up --build -d
 #+end_src
 
 #+NAME: wazuh-stop
 #+begin_src sh :var dir=wazuh-server-directory()
-  cd $dir
   docker compose -f docker-compose.yaml down --remove-orphans
 #+end_src
 
