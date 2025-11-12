@@ -42,7 +42,6 @@ services:
       - ./config/wazuh_integrations:/var/ossec/integrations
       - ./ossec.conf:/wazuh-config-mount/etc/ossec.conf
     networks:
-      internal:
       resilmesh_network:
         ipv4_address: ${MANAGER_IP}
 
@@ -72,7 +71,7 @@ services:
       - ./config/wazuh_indexer/wazuh.indexer.yml:/usr/share/wazuh-indexer/opensearch.yml
       - ./config/wazuh_indexer/internal_users.yml:/usr/share/wazuh-indexer/opensearch-security/internal_users.yml
     networks:
-      internal:
+      resilmesh_network:
 
   wazuh.dashboard:
     image: wazuh/wazuh-dashboard:4.9.0
@@ -103,7 +102,7 @@ services:
       - wazuh.indexer:wazuh.indexer
       - wazuh.manager:wazuh.manager
     networks:
-      internal:
+      resilmesh_network:
 
 volumes:
   api_configuration:
@@ -121,6 +120,5 @@ volumes:
   dashboard-custom:
 
 networks:
-  internal:
   resilmesh_network:
     external: true
