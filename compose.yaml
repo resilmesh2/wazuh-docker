@@ -1,6 +1,6 @@
 services:
   wazuh.manager:
-    build: .
+    image: wazuh/wazuh-manager:4.9.0
     hostname: wazuh.manager
     container_name: ResilMesh-Wazuh-Manager
     ulimits:
