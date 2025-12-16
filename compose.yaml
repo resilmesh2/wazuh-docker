@@ -42,7 +42,8 @@ services:
       - ./config/wazuh_integrations:/var/ossec/integrations
       - ./ossec.conf:/wazuh-config-mount/etc/ossec.conf
     networks:
-      - resilmesh_network
+      resilmesh_network:
+        ipv4_address: 172.19.0.100
 
   wazuh.indexer:
     image: wazuh/wazuh-indexer:4.9.0
