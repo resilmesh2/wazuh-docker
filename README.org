@@ -20,7 +20,7 @@ configuration files/directories are:
 - =ossec.conf= :: This file will replace the server's =ossec.conf= file, edit it
   according to your needs.  The file includes an example integration for the
   interaction with the Mitigation Manager component, which should be edited with
-  the appropriate Wazuh rule IDs.  See the comment in line 296 for more
+  the appropriate Wazuh rule IDs.  See the comment in line 302 for more
   information.
 
 * Deployment
