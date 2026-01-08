@@ -18,7 +18,10 @@ configuration files/directories are:
 - =integrations/= :: Add any custom integrations here.
 
 - =ossec.conf= :: This file will replace the server's =ossec.conf= file, edit it
-  according to your needs.
+  according to your needs.  The file includes an example integration for the
+  interaction with the Mitigation Manager component, which should be edited with
+  the appropriate Wazuh rule IDs.  See the comment in line 296 for more
+  information.
 
 * Deployment
 
