@@ -1,16 +1,16 @@
 nodes:
   # Wazuh indexer server nodes
   indexer:
-    - name: wazuh.indexer
-      ip: wazuh.indexer
+    - name: resilmesh_tap_wazuh_indexer
+      ip: resilmesh_tap_wazuh_indexer
 
   # Wazuh server nodes
   # Use node_type only with more than one Wazuh manager
   server:
-    - name: wazuh.manager
-      ip: wazuh.manager
+    - name: resilmesh_tap_wazuh_manager
+      ip: resilmesh_tap_wazuh_manager
 
   # Wazuh dashboard node
   dashboard:
-    - name: wazuh.dashboard
-      ip: wazuh.dashboard
+    - name: resilmesh_tap_wazuh_dashboard
+      ip: resilmesh_tap_wazuh_dashboard
