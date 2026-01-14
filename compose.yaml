@@ -1,8 +1,8 @@
 services:
-  resilmesh_tap_wazuh_manager:
+  wazuh.manager:
     image: wazuh/wazuh-manager:4.9.0
-    hostname: resilmesh_tap_wazuh_manager
-    container_name: resilmesh_tap_wazuh_manager
+    hostname: wazuh.manager
+    container_name: ResilMesh-Wazuh-Manager
     ulimits:
       memlock:
         soft: -1
@@ -16,7 +16,7 @@ services:
       - 514:514/udp
       - 55000:55000
     environment:
-      - INDEXER_URL=https://resilmesh_tap_wazuh_indexer:9200
+      - INDEXER_URL=https://wazuh.indexer:9200
       - INDEXER_USERNAME=admin
       - INDEXER_PASSWORD=SecretPassword
       - FILEBEAT_SSL_VERIFICATION_MODE=full
@@ -45,10 +45,10 @@ services:
       resilmesh_network:
         ipv4_address: 172.19.0.100
 
-  resilmesh_tap_wazuh_indexer:
+  wazuh.indexer:
     image: wazuh/wazuh-indexer:4.9.0
-    hostname: resilmesh_tap_wazuh_indexer
-    container_name: resilmesh_tap_wazuh_indexer
+    hostname: wazuh.indexer
+    container_name: ResilMesh-Wazuh-Indexer
     restart: always
     ports:
       - ${INDEXER_PORT}:9200
@@ -73,17 +73,17 @@ services:
     networks:
       - resilmesh_network
 
-  resilmesh_tap_wazuh_dashboard:
+  wazuh.dashboard:
     image: wazuh/wazuh-dashboard:4.9.0
-    hostname: resilmesh_tap_wazuh_dashboard
-    container_name: resilmesh_tap_wazuh_dashboard
+    hostname: wazuh.dashboard
+    container_name: ResilMesh-Wazuh-Dashboard
     restart: always
     ports:
       - ${DASHBOARD_PORT}:5601
     environment:
       - INDEXER_USERNAME=admin
       - INDEXER_PASSWORD=SecretPassword
-      - WAZUH_API_URL=https://resilmesh_tap_wazuh_manager
+      - WAZUH_API_URL=https://wazuh.manager
       - DASHBOARD_USERNAME=kibanaserver
       - DASHBOARD_PASSWORD=kibanaserver
       - API_USERNAME=wazuh-wui
@@ -97,10 +97,10 @@ services:
       - ./config/wazuh_dashboard/opensearch_dashboards.yml:/usr/share/wazuh-dashboard/config/opensearch_dashboards.yml
       - ./config/wazuh_dashboard/wazuh.yml:/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml
     depends_on:
-      - resilmesh_tap_wazuh_indexer
+      - wazuh.indexer
     links:
-      - resilmesh_tap_wazuh_indexer:resilmesh_tap_wazuh_indexer
-      - resilmesh_tap_wazuh_manager:resilmesh_tap_wazuh_manager
+      - wazuh.indexer:wazuh.indexer
+      - wazuh.manager:wazuh.manager
     networks:
       - resilmesh_network
 
