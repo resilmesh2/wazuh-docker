@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 # NATS Broker
-BROKER = 'nats://resilmesh_mb:4222'
+BROKER = 'nats://resilmesh_ap_nats:4222'
 
 # NATS topic
 TOPIC = 'alerts'

@@ -73,5 +73,167 @@
 <description>Resilmesh</description> 
 <decoded_as>Resilmesh_decoders</decoded_as> 
 <field name="silent_push.wazuh_rule_level">15</field> 
+</rule>
+<rule id="100001" level="10">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.parentImage" type="osregex">\.*thunderbird.exe\.*</field>
+  <field name="win.eventdata.image">\.*msedge.exe\.*</field>
+  <description>Potential phishing activity detected - Web browser launched by email client</description>
+   <mitre>
+    <id>T1204</id>
+  </mitre>
+ </rule>
+
+<!--  
+ <rule id="100002" level="10" frequency="10" timeframe="1">
+  <if_matched_group>sysmon_event3</if_matched_group>
+  <same_srcip />
+  <description>Potential Nmap scan detected - Multiple connections to multiple ports from same source</description>
+  <mitre>
+    <id>T1046</id>
+  </mitre>
+</rule>
+-->
+
+<rule id="100002" level="10" ignore="1">
+  <if_group>sysmon_event3</if_group>
+  <description>Successful Remote Logon with WinRM port(5986)</description>
+  <if_matched_sid>92652</if_matched_sid>
+  <field name="win.eventdata.destinationPort">5986</field>
+  <group>winrm_network</group>
+</rule>
+<!--
+<rule id="100004" level="5">
+  <field name="win.system.eventID">4624</field>
+  <field name="win.system.providerName">Microsoft-Windows-Security-Auditing</field>
+  <field name="win.system.event_data.LogonType">3</field>
+  <description>Successful network logon detected</description>
+  <group>authentication_success,network_logon,windows,windows_security,</group>
+</rule>
+
+<rule id="100003" level="10" timeframe="1">
+  <description>WinRM logon detected from remote host</description>
+  <if_matched_sid>100002</if_matched_sid>
+  <if_sid>92651</if_sid>
+  <group>correlation,</group>
+</rule>
+-->
+
+<!--
+<rule id="10000" level="12">
+ <if_group>sysmon_event1</if_group>
+ <description>Potential Privilege Escalation Detected</description>
+ <field name="win.eventdata.image">C:\\Windows\\system32\\cmd.exe</field>
+ <field name="win.eventdata.CommandLine">.*powershell.exe.*-nop.*-w hidden.*-noni.*</field>
+ <regex field="win.eventdata.CommandLine">(?i)AmsiUtils|cachedGroupPolicySettings|EnableScriptBlockLogging|EnableModuleLogging|FromBase64String|MemoryStream|GzipStream</regex>
+ <options>no_full_log</options>
+ <mitre>
+  <id>T1059</id>
+  <id>T1086</id>
+  <id>T1562</id>
+ </mitre>
+ <group>privilege_escalation,</group>
+</rule>
+-->
+<rule id="100003" level="12">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)net\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*user.*(administrator|guest|defaultaccount|wdagutilityaccount|system|local\s+ service|network\s+service).*</field>
+  <description>Net.exe executed user or group management commands - potential default account manipulation</description>
+  <mitre>
+    <id>T1078.001</id>
+  </mitre>
+</rule>
+
+<rule id="100004" level="6">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)powershell\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*get-smbshare.*</field>
+  <description>PowerShell executed Get-SMBShare command - SMB share enumeration detected</description>
+  <mitre>
+    <id>T1135</id>
+  </mitre>
+</rule>
+
+<rule id="100005" level="10">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)powershell\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*get-service.*remote.*desktop.*</field>
+  <description>PowerShell executed Get-Service command targeting Remote Desktop services - RDP reconnaissance detected</description>
+  <mitre>
+    <id>T1046</id>
+  </mitre>
+</rule>
+
+<rule id="100006" level="10">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)powershell\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*(ls|get-childitem|gci).*-recurse.*</field>
+  <description>PowerShell executed recursive directory enumeration - file and directory discovery detected</description>
+  <mitre>
+    <id>T1083</id>
+  </mitre>
+</rule>
+
+<rule id="100007" level="12">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)powershell\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*(findstr|select-string).*</field>
+  <description>PowerShell executed text search commands - potential credential harvesting</description>
+  <mitre>
+    <id>T1552.001</id>
+  </mitre>
+</rule>
+
+<rule id="100008" level="12">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)net\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*(user|localgroup).*\/add.*</field>
+  <description>Net.exe executed user or group management commands - potential account manipulation</description>
+  <mitre>
+    <id>T1078.003</id>
+    <id>T1136.001</id>
+  </mitre>
+</rule>
+
+<rule id="100009" level="10">
+  <if_sid>100006</if_sid>
+   <field name="win.eventdata.commandLine" type="pcre2">.*Compress-Archive.*</field>
+  <description>PowerShell file compression after directory enumeration - potential data collection and staging for exfiltration</description>
+  <mitre>
+    <id>T1005</id>
+  </mitre>
+</rule>
+
+<rule id="100010" level="12">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)powershell\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*pastebin\.com.*</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*Invoke-RestMethod\s+-Uri.*-Method\s+Post.*</field>
+  <description>Exfiltrate data with HTTP POST to text storage sites - pastebin.com</description>
+  <mitre>
+    <id>T1567.003</id>
+  </mitre>
+</rule>
+
+<rule id="100011" level="12">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)powershell\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*Kerberos::list.*/export.*</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*\.kirbi.*</field>
+  <description>Extract kerberos tickets with mimikatz</description>
+  <mitre>
+    <id>T1558.003</id>
+  </mitre>
+</rule>
+
+<rule id="100012" level="15">
+  <if_group>sysmon_event1</if_group>
+  <field name="win.eventdata.image" type="pcre2">(?i)curl\.exe$</field>
+  <field name="win.eventdata.commandLine" type="pcre2">(?i).*-s.*-F.*\.kirbi.*file\.io.*</field>
+  <description>Kerberos ticket exfiltration to file.io using curl over HTTPS</description>
+  <mitre>
+    <id>T1048.002</id>
+  </mitre>
 </rule> 
 </group>
