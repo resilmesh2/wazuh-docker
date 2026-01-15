@@ -1,8 +1,8 @@
 services:
-  resilmesh_tap_wazuh_manager:
+  resilmesh-tap-wazuh-manager:
     image: wazuh/wazuh-manager:4.9.0
-    hostname: resilmesh_tap_wazuh_manager
-    container_name: resilmesh_tap_wazuh_manager
+    hostname: resilmesh-tap-wazuh-manager
+    container_name: resilmesh-tap-wazuh-manager
     ulimits:
       memlock:
         soft: -1
@@ -16,7 +16,7 @@ services:
       - 514:514/udp
       - 55000:55000
     environment:
-      - INDEXER_URL=https://resilmesh_tap_wazuh_indexer:9200
+      - INDEXER_URL=https://resilmesh-tap-wazuh-indexer:9200
       - INDEXER_USERNAME=admin
       - INDEXER_PASSWORD=SecretPassword
       - FILEBEAT_SSL_VERIFICATION_MODE=full
@@ -37,18 +37,18 @@ services:
       - ./config/wazuh_active_response:/var/ossec/active-response/bin
       - ./config/wazuh_etc:/var/ossec/etc
       - ./config/wazuh_indexer_ssl_certs/root-ca-manager.pem:/etc/ssl/root-ca.pem
-      - ./config/wazuh_indexer_ssl_certs/resilmesh_tap_wazuh_manager.pem:/etc/ssl/filebeat.pem
-      - ./config/wazuh_indexer_ssl_certs/resilmesh_tap_wazuh_manager-key.pem:/etc/ssl/filebeat.key
+      - ./config/wazuh_indexer_ssl_certs/resilmesh-tap-wazuh-manager.pem:/etc/ssl/filebeat.pem
+      - ./config/wazuh_indexer_ssl_certs/resilmesh-tap-wazuh-manager-key.pem:/etc/ssl/filebeat.key
       - ./config/wazuh_integrations:/var/ossec/integrations
       - ./ossec.conf:/wazuh-config-mount/etc/ossec.conf
     networks:
       resilmesh_network:
         ipv4_address: 172.19.0.100
 
-  resilmesh_tap_wazuh_indexer:
+  resilmesh-tap-wazuh-indexer:
     image: wazuh/wazuh-indexer:4.9.0
-    hostname: resilmesh_tap_wazuh_indexer
-    container_name: resilmesh_tap_wazuh_indexer
+    hostname: resilmesh-tap-wazuh-indexer
+    container_name: resilmesh-tap-wazuh-indexer
     restart: always
     ports:
       - ${INDEXER_PORT}:9200
@@ -64,8 +64,8 @@ services:
     volumes:
       - indexer-data:/var/lib/wazuh-indexer
       - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-indexer/certs/root-ca.pem
-      - ./config/wazuh_indexer_ssl_certs/resilmesh_tap_wazuh_indexer-key.pem:/usr/share/wazuh-indexer/certs/resilmesh_tap_wazuh_indexer.key
-      - ./config/wazuh_indexer_ssl_certs/resilmesh_tap_wazuh_indexer.pem:/usr/share/wazuh-indexer/certs/resilmesh_tap_wazuh_indexer.pem
+      - ./config/wazuh_indexer_ssl_certs/resilmesh-tap-wazuh-indexer-key.pem:/usr/share/wazuh-indexer/certs/resilmesh-tap-wazuh-indexer.key
+      - ./config/wazuh_indexer_ssl_certs/resilmesh-tap-wazuh-indexer.pem:/usr/share/wazuh-indexer/certs/resilmesh-tap-wazuh-indexer.pem
       - ./config/wazuh_indexer_ssl_certs/admin.pem:/usr/share/wazuh-indexer/certs/admin.pem
       - ./config/wazuh_indexer_ssl_certs/admin-key.pem:/usr/share/wazuh-indexer/certs/admin-key.pem
       - ./config/wazuh_indexer/wazuh.indexer.yml:/usr/share/wazuh-indexer/opensearch.yml
@@ -73,17 +73,17 @@ services:
     networks:
       - resilmesh_network
 
-  resilmesh_tap_wazuh_dashboard:
+  resilmesh-tap-wazuh-dashboard:
     image: wazuh/wazuh-dashboard:4.9.0
-    hostname: resilmesh_tap_wazuh_dashboard
-    container_name: resilmesh_tap_wazuh_dashboard
+    hostname: resilmesh-tap-wazuh-dashboard
+    container_name: resilmesh-tap-wazuh-dashboard
     restart: always
     ports:
       - ${DASHBOARD_PORT}:5601
     environment:
       - INDEXER_USERNAME=admin
       - INDEXER_PASSWORD=SecretPassword
-      - WAZUH_API_URL=https://resilmesh_tap_wazuh_manager
+      - WAZUH_API_URL=https://resilmesh-tap-wazuh-manager
       - DASHBOARD_USERNAME=kibanaserver
       - DASHBOARD_PASSWORD=kibanaserver
       - API_USERNAME=wazuh-wui
@@ -91,16 +91,16 @@ services:
     volumes:
       - dashboard-config:/usr/share/wazuh-dashboard/data/wazuh/config
       - dashboard-custom:/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom
-      - ./config/wazuh_indexer_ssl_certs/resilmesh_tap_wazuh_dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem
-      - ./config/wazuh_indexer_ssl_certs/resilmesh_tap_wazuh_dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem
+      - ./config/wazuh_indexer_ssl_certs/resilmesh-tap-wazuh-dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem
+      - ./config/wazuh_indexer_ssl_certs/resilmesh-tap-wazuh-dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem
       - ./config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem
       - ./config/wazuh_dashboard/opensearch_dashboards.yml:/usr/share/wazuh-dashboard/config/opensearch_dashboards.yml
       - ./config/wazuh_dashboard/wazuh.yml:/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml
     depends_on:
-      - resilmesh_tap_wazuh_indexer
+      - resilmesh-tap-wazuh-indexer
     links:
-      - resilmesh_tap_wazuh_indexer:resilmesh_tap_wazuh_indexer
-      - resilmesh_tap_wazuh_manager:resilmesh_tap_wazuh_manager
+      - resilmesh-tap-wazuh-indexer:resilmesh-tap-wazuh-indexer
+      - resilmesh-tap-wazuh-manager:resilmesh-tap-wazuh-manager
     networks:
       - resilmesh_network
 
