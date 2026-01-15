@@ -65,7 +65,7 @@ services:
       - ./config/wazuh_indexer_ssl_certs/resilmesh_tap_wazuh_indexer.pem:/usr/share/wazuh-indexer/certs/resilmesh_tap_wazuh_indexer.pem
       - ./config/wazuh_indexer_ssl_certs/admin.pem:/usr/share/wazuh-indexer/certs/admin.pem
       - ./config/wazuh_indexer_ssl_certs/admin-key.pem:/usr/share/wazuh-indexer/certs/admin-key.pem
-      - ./config/wazuh_indexer/resilmesh_tap_wazuh_indexer.yml:/usr/share/wazuh-indexer/opensearch.yml
+      - ./config/wazuh_indexer/wazuh.indexer.yml:/usr/share/wazuh-indexer/opensearch.yml
       - ./config/wazuh_indexer/internal_users.yml:/usr/share/wazuh-indexer/opensearch-security/internal_users.yml
 
   resilmesh_tap_wazuh_dashboard:
