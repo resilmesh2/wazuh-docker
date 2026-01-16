@@ -16,7 +16,7 @@ except ModuleNotFoundError:
 # ossec.conf configuration:
 # <integration>
 #   <name>nats</name>
-#   <hook_url>nats://resilmesh_ap_nats:4222</hook_url> <!-- Replace with your sanic server hook URL -->
+#   <hook_url>nats://resilmesh-ap-nats:4222</hook-url> <!-- Replace with your sanic server hook URL -->
 #   <alert_format>json</alert_format>
 # </integration>
 
