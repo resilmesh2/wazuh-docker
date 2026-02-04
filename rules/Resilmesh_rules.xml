@@ -75,14 +75,14 @@
 <field name="silent_push.wazuh_rule_level">15</field> 
 </rule>
 <rule id="100001" level="10">
-  <if_group>sysmon_event1</if_group>
-  <field name="win.eventdata.parentImage" type="osregex">\.*thunderbird.exe\.*</field>
-  <field name="win.eventdata.image">\.*msedge.exe\.*</field>
-  <description>Potential phishing activity detected - Web browser launched by email client</description>
-   <mitre>
-    <id>T1204</id>
-  </mitre>
- </rule>
+<if_group>sysmon_event1</if_group>
+<field name="win.eventdata.parentImage" type="osregex">\.*thunderbird.exe\.*</field>
+<field name="win.eventdata.image">\.*msedge.exe\.*</field>
+<description>Potential phishing activity detected - Web browser launched by email client</description>
+<mitre>
+<id>T1204</id>
+</mitre>
+</rule>
 
 <!--  
  <rule id="100002" level="10" frequency="10" timeframe="1">
